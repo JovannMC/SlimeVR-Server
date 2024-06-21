@@ -21,6 +21,7 @@ import io.github.axisangles.ktmath.EulerOrder
 import io.github.axisangles.ktmath.Quaternion
 import io.github.axisangles.ktmath.Quaternion.Companion.I
 import io.github.axisangles.ktmath.Quaternion.Companion.IDENTITY
+import io.github.axisangles.ktmath.Quaternion.Companion.J
 import io.github.axisangles.ktmath.Quaternion.Companion.fromTo
 import io.github.axisangles.ktmath.Vector3
 import io.github.axisangles.ktmath.Vector3.Companion.NEG_Y
@@ -113,6 +114,7 @@ class HumanSkeleton(
 	var hasRightFootTracker = false
 	var hasLeftArmTracker = false
 	var hasRightArmTracker = false
+	var hasFingerTracker = false
 
 	// Input trackers
 	var headTracker: Tracker? = null
@@ -314,24 +316,63 @@ class HumanSkeleton(
 			rightLowerArmBone.attachChild(rightHandBone)
 			rightHandBone.attachChild(rightHandTrackerBone)
 		}
+
+		// Fingers
+		leftHandBone.attachChild(leftThumbProximalBone)
+		leftThumbProximalBone.attachChild(leftThumbIntermediateBone)
+		leftThumbIntermediateBone.attachChild(leftThumbDistalBone)
+		leftHandBone.attachChild(leftIndexProximalBone)
+		leftIndexProximalBone.attachChild(leftIndexIntermediateBone)
+		leftIndexIntermediateBone.attachChild(leftIndexDistalBone)
+		leftHandBone.attachChild(leftMiddleProximalBone)
+		leftMiddleProximalBone.attachChild(leftMiddleIntermediateBone)
+		leftMiddleIntermediateBone.attachChild(leftMiddleDistalBone)
+		leftHandBone.attachChild(leftRingProximalBone)
+		leftRingProximalBone.attachChild(leftRingIntermediateBone)
+		leftRingIntermediateBone.attachChild(leftRingDistalBone)
+		leftHandBone.attachChild(leftLittleProximalBone)
+		leftLittleProximalBone.attachChild(leftLittleIntermediateBone)
+		leftLittleIntermediateBone.attachChild(leftLittleDistalBone)
+		rightHandBone.attachChild(rightThumbProximalBone)
+		rightThumbProximalBone.attachChild(rightThumbIntermediateBone)
+		rightThumbIntermediateBone.attachChild(rightThumbDistalBone)
+		rightHandBone.attachChild(rightIndexProximalBone)
+		rightIndexProximalBone.attachChild(rightIndexIntermediateBone)
+		rightIndexIntermediateBone.attachChild(rightIndexDistalBone)
+		rightHandBone.attachChild(rightMiddleProximalBone)
+		rightMiddleProximalBone.attachChild(rightMiddleIntermediateBone)
+		rightMiddleIntermediateBone.attachChild(rightMiddleDistalBone)
+		rightHandBone.attachChild(rightRingProximalBone)
+		rightRingProximalBone.attachChild(rightRingIntermediateBone)
+		rightRingIntermediateBone.attachChild(rightRingDistalBone)
+		rightHandBone.attachChild(rightLittleProximalBone)
+		rightLittleProximalBone.attachChild(rightLittleIntermediateBone)
+		rightLittleIntermediateBone.attachChild(rightLittleDistalBone)
 	}
 
 	/**
 	 * Set input trackers from a list
 	 */
 	fun setTrackersFromList(trackers: List<Tracker>) {
+		// Head
 		headTracker = getTrackerForSkeleton(trackers, TrackerPosition.HEAD)
 		neckTracker = getTrackerForSkeleton(trackers, TrackerPosition.NECK)
+
+		// Spine
 		upperChestTracker = getTrackerForSkeleton(trackers, TrackerPosition.UPPER_CHEST)
 		chestTracker = getTrackerForSkeleton(trackers, TrackerPosition.CHEST)
 		waistTracker = getTrackerForSkeleton(trackers, TrackerPosition.WAIST)
 		hipTracker = getTrackerForSkeleton(trackers, TrackerPosition.HIP)
+
+		// Legs
 		leftUpperLegTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_UPPER_LEG)
 		leftLowerLegTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_LOWER_LEG)
 		leftFootTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_FOOT)
 		rightUpperLegTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_UPPER_LEG)
 		rightLowerLegTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_LOWER_LEG)
 		rightFootTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_FOOT)
+
+		// Arms
 		leftLowerArmTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_LOWER_ARM)
 		rightLowerArmTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_LOWER_ARM)
 		leftUpperArmTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_UPPER_ARM)
@@ -341,7 +382,39 @@ class HumanSkeleton(
 		leftShoulderTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_SHOULDER)
 		rightShoulderTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_SHOULDER)
 
-		// Check for specific conditions and store them in booleans.
+		// Fingers
+		leftThumbProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_THUMB_PROXIMAL)
+		leftThumbIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_THUMB_INTERMEDIATE)
+		leftThumbDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_THUMB_DISTAL)
+		leftIndexProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_INDEX_PROXIMAL)
+		leftIndexIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_INDEX_INTERMEDIATE)
+		leftIndexDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_INDEX_DISTAL)
+		leftMiddleProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_MIDDLE_PROXIMAL)
+		leftMiddleIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_MIDDLE_INTERMEDIATE)
+		leftMiddleDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_MIDDLE_DISTAL)
+		leftRingProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_RING_PROXIMAL)
+		leftRingIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_RING_INTERMEDIATE)
+		leftRingDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_RING_DISTAL)
+		leftLittleProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_LITTLE_PROXIMAL)
+		leftLittleIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_LITTLE_INTERMEDIATE)
+		leftLittleDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.LEFT_LITTLE_DISTAL)
+		rightThumbProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_THUMB_PROXIMAL)
+		rightThumbIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_THUMB_INTERMEDIATE)
+		rightThumbDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_THUMB_DISTAL)
+		rightIndexProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_INDEX_PROXIMAL)
+		rightIndexIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_INDEX_INTERMEDIATE)
+		rightIndexDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_INDEX_DISTAL)
+		rightMiddleProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_MIDDLE_PROXIMAL)
+		rightMiddleIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_MIDDLE_INTERMEDIATE)
+		rightMiddleDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_MIDDLE_DISTAL)
+		rightRingProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_RING_PROXIMAL)
+		rightRingIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_RING_INTERMEDIATE)
+		rightRingDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_RING_DISTAL)
+		rightLittleProximalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_LITTLE_PROXIMAL)
+		rightLittleIntermediateTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_LITTLE_INTERMEDIATE)
+		rightLittleDistalTracker = getTrackerForSkeleton(trackers, TrackerPosition.RIGHT_LITTLE_DISTAL)
+
+		// Check for specific conditions and cache them
 		hasSpineTracker = upperChestTracker != null || chestTracker != null || waistTracker != null || hipTracker != null
 		hasKneeTrackers = leftUpperLegTracker != null && rightUpperLegTracker != null
 		hasLeftLegTracker = leftUpperLegTracker != null || leftLowerLegTracker != null || leftFootTracker != null
@@ -350,6 +423,16 @@ class HumanSkeleton(
 		hasRightFootTracker = rightFootTracker != null
 		hasLeftArmTracker = leftLowerArmTracker != null || leftUpperArmTracker != null
 		hasRightArmTracker = rightLowerArmTracker != null || rightUpperArmTracker != null
+		hasFingerTracker = leftThumbProximalTracker != null || leftThumbIntermediateTracker != null || leftThumbDistalTracker != null ||
+			leftIndexProximalTracker != null || leftIndexIntermediateTracker != null || leftIndexDistalTracker != null ||
+			leftMiddleProximalTracker != null || leftMiddleIntermediateTracker != null || leftMiddleDistalTracker != null ||
+			leftRingProximalTracker != null || leftRingIntermediateTracker != null || leftRingDistalTracker != null ||
+			leftLittleProximalTracker != null || leftLittleIntermediateTracker != null || leftLittleDistalTracker != null ||
+			rightThumbProximalTracker != null || rightThumbIntermediateTracker != null || rightThumbDistalTracker != null ||
+			rightIndexProximalTracker != null || rightIndexIntermediateTracker != null || rightIndexDistalTracker != null ||
+			rightMiddleProximalTracker != null || rightMiddleIntermediateTracker != null || rightMiddleDistalTracker != null ||
+			rightRingProximalTracker != null || rightRingIntermediateTracker != null || rightRingDistalTracker != null ||
+			rightLittleProximalTracker != null || rightLittleIntermediateTracker != null || rightLittleDistalTracker != null
 
 		// Rebuilds the arm skeleton nodes attachments
 		assembleSkeletonArms(true)
@@ -452,6 +535,7 @@ class HumanSkeleton(
 
 		// Spine
 		updateSpineTransforms()
+
 		// Left leg
 		updateLegTransforms(
 			leftUpperLegBone,
@@ -463,6 +547,7 @@ class HumanSkeleton(
 			leftLowerLegTracker,
 			leftFootTracker,
 		)
+
 		// Right leg
 		updateLegTransforms(
 			rightUpperLegBone,
@@ -474,6 +559,7 @@ class HumanSkeleton(
 			rightLowerLegTracker,
 			rightFootTracker,
 		)
+
 		// Left arm
 		updateArmTransforms(
 			isTrackingLeftArmFromController,
@@ -488,6 +574,7 @@ class HumanSkeleton(
 			leftLowerArmTracker,
 			leftHandTracker,
 		)
+
 		// Right arm
 		updateArmTransforms(
 			isTrackingRightArmFromController,
@@ -501,6 +588,106 @@ class HumanSkeleton(
 			rightUpperArmTracker,
 			rightLowerArmTracker,
 			rightHandTracker,
+		)
+
+		// Left thumb
+		updateFingerTransforms(
+			leftThumbProximalBone,
+			leftThumbIntermediateBone,
+			leftThumbDistalBone,
+			leftThumbProximalTracker,
+			leftThumbIntermediateTracker,
+			leftThumbDistalTracker,
+		)
+
+		// Left index
+		updateFingerTransforms(
+			leftIndexProximalBone,
+			leftIndexIntermediateBone,
+			leftIndexDistalBone,
+			leftIndexProximalTracker,
+			leftIndexIntermediateTracker,
+			leftIndexDistalTracker,
+		)
+
+		// Left middle
+		updateFingerTransforms(
+			leftMiddleProximalBone,
+			leftMiddleIntermediateBone,
+			leftMiddleDistalBone,
+			leftMiddleProximalTracker,
+			leftMiddleIntermediateTracker,
+			leftMiddleDistalTracker,
+		)
+
+		// Left ring
+		updateFingerTransforms(
+			leftRingProximalBone,
+			leftRingIntermediateBone,
+			leftRingDistalBone,
+			leftRingProximalTracker,
+			leftRingIntermediateTracker,
+			leftRingDistalTracker,
+		)
+
+		// Left little
+		updateFingerTransforms(
+			leftLittleProximalBone,
+			leftLittleIntermediateBone,
+			leftLittleDistalBone,
+			leftLittleProximalTracker,
+			leftLittleIntermediateTracker,
+			leftLittleDistalTracker,
+		)
+
+		// Right thumb
+		updateFingerTransforms(
+			rightThumbProximalBone,
+			rightThumbIntermediateBone,
+			rightThumbDistalBone,
+			rightThumbProximalTracker,
+			rightThumbIntermediateTracker,
+			rightThumbDistalTracker,
+		)
+
+		// Right index
+		updateFingerTransforms(
+			rightIndexProximalBone,
+			rightIndexIntermediateBone,
+			rightIndexDistalBone,
+			rightIndexProximalTracker,
+			rightIndexIntermediateTracker,
+			rightIndexDistalTracker,
+		)
+
+		// Right middle
+		updateFingerTransforms(
+			rightMiddleProximalBone,
+			rightMiddleIntermediateBone,
+			rightMiddleDistalBone,
+			rightMiddleProximalTracker,
+			rightMiddleIntermediateTracker,
+			rightMiddleDistalTracker,
+		)
+
+		// Right ring
+		updateFingerTransforms(
+			rightRingProximalBone,
+			rightRingIntermediateBone,
+			rightRingDistalBone,
+			rightRingProximalTracker,
+			rightRingIntermediateTracker,
+			rightRingDistalTracker,
+		)
+
+		// Right little
+		updateFingerTransforms(
+			rightLittleProximalBone,
+			rightLittleIntermediateBone,
+			rightLittleDistalBone,
+			rightLittleProximalTracker,
+			rightLittleIntermediateTracker,
+			rightLittleDistalTracker,
 		)
 	}
 
@@ -757,6 +944,17 @@ class HumanSkeleton(
 				}
 			}
 		}
+	}
+
+	private fun updateFingerTransforms(
+		proximalBone: Bone,
+		intermediateBone: Bone,
+		distalBone: Bone,
+		proximalTracker: Tracker?,
+		intermediateTracker: Tracker?,
+		distalTracker: Tracker?,
+	) {
+		intermediateBone.setRotation(J)
 	}
 
 	/**
@@ -1017,6 +1215,36 @@ class HumanSkeleton(
 		BoneType.RIGHT_HAND -> rightHandBone
 		BoneType.LEFT_HAND_TRACKER -> leftHandTrackerBone
 		BoneType.RIGHT_HAND_TRACKER -> rightHandTrackerBone
+		BoneType.LEFT_THUMB_PROXIMAL -> leftThumbProximalBone
+		BoneType.LEFT_THUMB_INTERMEDIATE -> leftThumbIntermediateBone
+		BoneType.LEFT_THUMB_DISTAL -> leftThumbDistalBone
+		BoneType.LEFT_INDEX_PROXIMAL -> leftIndexProximalBone
+		BoneType.LEFT_INDEX_INTERMEDIATE -> leftIndexIntermediateBone
+		BoneType.LEFT_INDEX_DISTAL -> leftIndexDistalBone
+		BoneType.LEFT_MIDDLE_PROXIMAL -> leftMiddleProximalBone
+		BoneType.LEFT_MIDDLE_INTERMEDIATE -> leftMiddleIntermediateBone
+		BoneType.LEFT_MIDDLE_DISTAL -> leftMiddleDistalBone
+		BoneType.LEFT_RING_PROXIMAL -> leftRingProximalBone
+		BoneType.LEFT_RING_INTERMEDIATE -> leftRingIntermediateBone
+		BoneType.LEFT_RING_DISTAL -> leftRingDistalBone
+		BoneType.LEFT_LITTLE_PROXIMAL -> leftLittleProximalBone
+		BoneType.LEFT_LITTLE_INTERMEDIATE -> leftLittleIntermediateBone
+		BoneType.LEFT_LITTLE_DISTAL -> leftLittleDistalBone
+		BoneType.RIGHT_THUMB_PROXIMAL -> rightThumbProximalBone
+		BoneType.RIGHT_THUMB_INTERMEDIATE -> rightThumbIntermediateBone
+		BoneType.RIGHT_THUMB_DISTAL -> rightThumbDistalBone
+		BoneType.RIGHT_INDEX_PROXIMAL -> rightIndexProximalBone
+		BoneType.RIGHT_INDEX_INTERMEDIATE -> rightIndexIntermediateBone
+		BoneType.RIGHT_INDEX_DISTAL -> rightIndexDistalBone
+		BoneType.RIGHT_MIDDLE_PROXIMAL -> rightMiddleProximalBone
+		BoneType.RIGHT_MIDDLE_INTERMEDIATE -> rightMiddleIntermediateBone
+		BoneType.RIGHT_MIDDLE_DISTAL -> rightMiddleDistalBone
+		BoneType.RIGHT_RING_PROXIMAL -> rightRingProximalBone
+		BoneType.RIGHT_RING_INTERMEDIATE -> rightRingIntermediateBone
+		BoneType.RIGHT_RING_DISTAL -> rightRingDistalBone
+		BoneType.RIGHT_LITTLE_PROXIMAL -> rightLittleProximalBone
+		BoneType.RIGHT_LITTLE_INTERMEDIATE -> rightLittleIntermediateBone
+		BoneType.RIGHT_LITTLE_DISTAL -> rightLittleDistalBone
 	}
 
 	/**
@@ -1046,6 +1274,36 @@ class HumanSkeleton(
 			rightLowerArmBone,
 			leftHandBone,
 			rightHandBone,
+			leftThumbProximalBone,
+			leftThumbIntermediateBone,
+			leftThumbDistalBone,
+			leftIndexProximalBone,
+			leftIndexIntermediateBone,
+			leftIndexDistalBone,
+			leftMiddleProximalBone,
+			leftMiddleIntermediateBone,
+			leftMiddleDistalBone,
+			leftRingProximalBone,
+			leftRingIntermediateBone,
+			leftRingDistalBone,
+			leftLittleProximalBone,
+			leftLittleIntermediateBone,
+			leftLittleDistalBone,
+			rightThumbProximalBone,
+			rightThumbIntermediateBone,
+			rightThumbDistalBone,
+			rightIndexProximalBone,
+			rightIndexIntermediateBone,
+			rightIndexDistalBone,
+			rightMiddleProximalBone,
+			rightMiddleIntermediateBone,
+			rightMiddleDistalBone,
+			rightRingProximalBone,
+			rightRingIntermediateBone,
+			rightRingDistalBone,
+			rightLittleProximalBone,
+			rightLittleIntermediateBone,
+			rightLittleDistalBone,
 		)
 
 	/**
@@ -1065,6 +1323,36 @@ class HumanSkeleton(
 			rightHandBone,
 			leftHandTrackerBone,
 			rightHandTrackerBone,
+			leftThumbProximalBone,
+			leftThumbIntermediateBone,
+			leftThumbDistalBone,
+			leftIndexProximalBone,
+			leftIndexIntermediateBone,
+			leftIndexDistalBone,
+			leftMiddleProximalBone,
+			leftMiddleIntermediateBone,
+			leftMiddleDistalBone,
+			leftRingProximalBone,
+			leftRingIntermediateBone,
+			leftRingDistalBone,
+			leftLittleProximalBone,
+			leftLittleIntermediateBone,
+			leftLittleDistalBone,
+			rightThumbProximalBone,
+			rightThumbIntermediateBone,
+			rightThumbDistalBone,
+			rightIndexProximalBone,
+			rightIndexIntermediateBone,
+			rightIndexDistalBone,
+			rightMiddleProximalBone,
+			rightMiddleIntermediateBone,
+			rightMiddleDistalBone,
+			rightRingProximalBone,
+			rightRingIntermediateBone,
+			rightRingDistalBone,
+			rightLittleProximalBone,
+			rightLittleIntermediateBone,
+			rightLittleDistalBone,
 		)
 
 	val hmdHeight: Float
@@ -1109,6 +1397,36 @@ class HumanSkeleton(
 			rightHandTracker,
 			leftShoulderTracker,
 			rightShoulderTracker,
+			leftThumbProximalTracker,
+			leftThumbIntermediateTracker,
+			leftThumbDistalTracker,
+			leftIndexProximalTracker,
+			leftIndexIntermediateTracker,
+			leftIndexDistalTracker,
+			leftMiddleProximalTracker,
+			leftMiddleIntermediateTracker,
+			leftMiddleDistalTracker,
+			leftRingProximalTracker,
+			leftRingIntermediateTracker,
+			leftRingDistalTracker,
+			leftLittleProximalTracker,
+			leftLittleIntermediateTracker,
+			leftLittleDistalTracker,
+			rightThumbProximalTracker,
+			rightThumbIntermediateTracker,
+			rightThumbDistalTracker,
+			rightIndexProximalTracker,
+			rightIndexIntermediateTracker,
+			rightIndexDistalTracker,
+			rightMiddleProximalTracker,
+			rightMiddleIntermediateTracker,
+			rightMiddleDistalTracker,
+			rightRingProximalTracker,
+			rightRingIntermediateTracker,
+			rightRingDistalTracker,
+			rightLittleProximalTracker,
+			rightLittleIntermediateTracker,
+			rightLittleDistalTracker,
 		)
 
 	fun resetTrackersFull(resetSourceName: String?) {

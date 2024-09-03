@@ -10,7 +10,6 @@ import { useDebouncedEffect } from '@/hooks/timeout';
 export function StartRecording({
   nextStep,
   prevStep,
-  variant,
   active,
 }: {
   nextStep: () => void;
@@ -113,10 +112,7 @@ export function StartRecording({
           <TipBox>{l10n.getString('tips-do_not_move_heels')}</TipBox>
         </div>
         <div className="flex gap-3 mobile:justify-between">
-          <Button
-            variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
-            onClick={prevStep}
-          >
+          <Button variant="tertiary" onClick={prevStep}>
             {l10n.getString('onboarding-automatic_proportions-prev_step')}
           </Button>
           <Button variant="primary" onClick={start}>

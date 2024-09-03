@@ -53,7 +53,7 @@ export function PutTrackersOnStep({
         <div className="flex flex-col gap-3">
           <div className="flex gap-3 mobile:justify-between">
             <Button
-              variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
+              variant="tertiary"
               to="/onboarding/mounting/choose"
               state={{ alonePage: variant === 'alone' }}
             >

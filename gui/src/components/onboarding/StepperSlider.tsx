@@ -30,7 +30,6 @@ export function StepContainer({
   active,
   type,
   step,
-  variant,
 }: {
   type: 'numbered' | 'fullsize';
   variant: 'alone' | 'onboarding';
@@ -42,10 +41,8 @@ export function StepContainer({
   return (
     <div
       className={classNames(
-        'step-container transition-transform duration-500 relative w-full xs:p-8 mobile:p-2 rounded-lg flex gap-4 h-full',
+        'step-container transition-transform duration-500 relative w-full xs:p-8 mobile:p-2 rounded-lg flex gap-4 h-full bg-background-60',
         !active && 'opacity-40 pointer-events-none',
-        variant === 'onboarding' && 'bg-background-70',
-        variant === 'alone' && 'bg-background-60'
       )}
       style={{
         minWidth: width,

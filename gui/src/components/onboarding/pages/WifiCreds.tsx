@@ -50,13 +50,7 @@ export function WifiCredsPage() {
               </Button>
             )}
           </div>
-          <div
-            className={classNames(
-              'flex flex-col gap-3 p-10 rounded-xl max-w-sm',
-              !state.alonePage && 'bg-background-70',
-              state.alonePage && 'bg-background-60'
-            )}
-          >
+          <div className="flex flex-col gap-3 p-10 rounded-xl max-w-sm bg-background-60">
             <Localized
               id="onboarding-wifi_creds-ssid"
               attrs={{ placeholder: true, label: true }}

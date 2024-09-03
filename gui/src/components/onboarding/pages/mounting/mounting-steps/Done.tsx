@@ -26,10 +26,7 @@ export function DoneStep({
       </div>
 
       <div className="flex gap-3">
-        <Button
-          variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
-          onClick={resetSteps}
-        >
+        <Button variant="tertiary" onClick={resetSteps}>
           {l10n.getString('onboarding-automatic_mounting-done-restart')}
         </Button>
 

@@ -177,13 +177,7 @@ export function ProportionsChoose() {
               'grid xs:grid-cols-2 w-full xs:flex-row mobile:flex-col gap-4 [&>div]:grow'
             )}
           >
-            <div
-              className={classNames(
-                'rounded-lg p-4 flex flex-row flex-grow',
-                !state.alonePage && 'bg-background-70',
-                state.alonePage && 'bg-background-60'
-              )}
-            >
+            <div className="rounded-lg p-4 flex flex-row flex-grow bg-background-60">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-grow flex-col gap-4 max-w-sm">
                   <div>
@@ -208,7 +202,7 @@ export function ProportionsChoose() {
                 </div>
 
                 <Button
-                  variant={!state.alonePage ? 'secondary' : 'tertiary'}
+                  variant="tertiary"
                   to="/onboarding/body-proportions/manual"
                   className="self-start mt-auto"
                   state={{ alonePage: state.alonePage }}
@@ -217,13 +211,7 @@ export function ProportionsChoose() {
                 </Button>
               </div>
             </div>
-            <div
-              className={classNames(
-                'rounded-lg p-4 flex flex-row relative',
-                !state.alonePage && 'bg-background-70',
-                state.alonePage && 'bg-background-60'
-              )}
-            >
+            <div className="rounded-lg p-4 flex flex-row relative bg-background-60">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-grow flex-col gap-4 max-w-sm">
                   <img
@@ -281,7 +269,7 @@ export function ProportionsChoose() {
               </Button>
             )}
             <Button
-              variant={!state.alonePage ? 'secondary' : 'tertiary'}
+              variant="tertiary"
               className="ml-auto"
               onClick={() =>
                 sendRPCPacket(
@@ -293,7 +281,7 @@ export function ProportionsChoose() {
               {l10n.getString('onboarding-choose_proportions-export')}
             </Button>
             <Button
-              variant={!state.alonePage ? 'secondary' : 'tertiary'}
+              variant="tertiary"
               className={classNames(
                 'transition-colors',
                 importState === ImportStatus.FAILED && 'bg-status-critical',

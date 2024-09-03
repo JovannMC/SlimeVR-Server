@@ -8,7 +8,6 @@ import { useBreakpoint } from '@/hooks/breakpoint';
 export function MountingResetStep({
   nextStep,
   prevStep,
-  variant,
 }: {
   nextStep: () => void;
   prevStep: () => void;
@@ -51,10 +50,7 @@ export function MountingResetStep({
         )}
 
         <div className="flex gap-3 mobile:justify-between">
-          <Button
-            variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
-            onClick={prevStep}
-          >
+          <Button variant="tertiary" onClick={prevStep}>
             {l10n.getString('onboarding-automatic_mounting-prev_step')}
           </Button>
           <ResetButton

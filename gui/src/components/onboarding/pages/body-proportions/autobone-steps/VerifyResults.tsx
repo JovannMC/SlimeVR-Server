@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { ProcessStatus, useAutobone } from '@/hooks/autobone';
 import { Button } from '@/components/commons/Button';
 import { Typography } from '@/components/commons/Typography';
@@ -7,7 +6,6 @@ import { useLocalization } from '@fluent/react';
 export function VerifyResultsStep({
   nextStep,
   prevStep,
-  variant,
 }: {
   nextStep: () => void;
   prevStep: () => void;
@@ -56,13 +54,7 @@ export function VerifyResultsStep({
                 'onboarding-automatic_proportions-verify_results-results'
               )}
             </Typography>
-            <div
-              className={classNames(
-                'flex flex-col  w-full p-4 rounded-md gap-2',
-                variant === 'onboarding' && 'bg-background-60',
-                variant === 'alone' && 'bg-background-50'
-              )}
-            >
+            <div className="flex flex-col  w-full p-4 rounded-md gap-2 bg-background-50">
               {bodyParts?.map(({ bone, label, value }) => (
                 <div className="flex justify-between" key={bone}>
                   <Typography color="secondary">{label}</Typography>
@@ -81,10 +73,7 @@ export function VerifyResultsStep({
           </div>
         </div>
         <div className="flex gap-2">
-          <Button
-            variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
-            onClick={redo}
-          >
+          <Button variant="tertiary" onClick={redo}>
             {l10n.getString(
               'onboarding-automatic_proportions-verify_results-redo'
             )}

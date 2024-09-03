@@ -28,7 +28,6 @@ interface HeightForm {
 export function CheckHeight({
   nextStep,
   prevStep,
-  variant,
 }: {
   nextStep: () => void;
   prevStep: () => void;
@@ -164,10 +163,7 @@ export function CheckHeight({
         </div>
 
         <div className="flex gap-3 mobile:justify-between">
-          <Button
-            variant={variant === 'onboarding' ? 'secondary' : 'tertiary'}
-            onClick={prevStep}
-          >
+          <Button variant="tertiary" onClick={prevStep}>
             {l10n.getString('onboarding-automatic_proportions-prev_step')}
           </Button>
           <Button

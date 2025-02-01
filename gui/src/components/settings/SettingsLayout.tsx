@@ -45,6 +45,10 @@ export function SettingSelectorMobile() {
         value: { url: '/settings/firmware-tool' },
       },
       {
+        label: l10n.getString('settings-sidebar-profiles'),
+        value: { url: '/settings/profiles' },
+      },
+      {
         label: l10n.getString('settings-sidebar-advanced'),
         value: { url: '/settings/advanced' },
       },

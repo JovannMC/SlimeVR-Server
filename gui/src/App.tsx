@@ -60,6 +60,7 @@ import { ScaledProportionsPage } from './components/onboarding/pages/body-propor
 import { EmptyLayout } from './components/EmptyLayout';
 import { AdvancedSettings } from './components/settings/pages/AdvancedSettings';
 import { FirmwareUpdate } from './components/firmware-update/FirmwareUpdate';
+import { Profiles } from './components/settings/pages/Profiles';
 
 export const GH_REPO = 'SlimeVR/SlimeVR-Server';
 export const VersionContext = createContext('');
@@ -117,13 +118,14 @@ function Layout() {
               </SettingsLayout>
             }
           >
-            <Route path="firmware-tool" element={<FirmwareToolSettings />} />
             <Route path="trackers" element={<GeneralSettings />} />
             <Route path="serial" element={<Serial />} />
             <Route path="osc/router" element={<OSCRouterSettings />} />
             <Route path="osc/vrchat" element={<VRCOSCSettings />} />
             <Route path="osc/vmc" element={<VMCSettings />} />
             <Route path="interface" element={<InterfaceSettings />} />
+            <Route path="firmware-tool" element={<FirmwareToolSettings />} />
+            <Route path="profiles" element={<Profiles />} />
             <Route path="advanced" element={<AdvancedSettings />} />
           </Route>
           <Route
@@ -214,7 +216,7 @@ export default function App() {
         setUpdateFound(releases[0].tag_name);
       }
     }
-    fetchReleases().catch(() => error('failed to fetch releases'));
+    fetchReleases().catch((e) => error(`Failed to fetch releases: ${e}`));
   }, []);
 
   if (isTauri) {
@@ -254,11 +256,11 @@ export default function App() {
               )
             );
           } else if (eventType === 'error') {
-            error('Error: %s', s);
+            error(`Error: ${s}`);
           } else if (eventType === 'terminated') {
-            error('Server Process Terminated: %s', s);
+            error(`Server Process Terminated: ${s}`);
           } else if (eventType === 'other') {
-            log('Other process event: %s', s);
+            log(`Other process event: ${s}`);
           }
         }
       );

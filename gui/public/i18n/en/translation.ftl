@@ -348,6 +348,7 @@ settings-sidebar-serial = Serial console
 settings-sidebar-appearance = Appearance
 settings-sidebar-notifications = Notifications
 settings-sidebar-firmware-tool = DIY Firmware Tool
+settings-sidebar-profiles = Profiles
 settings-sidebar-advanced = Advanced
 
 ## SteamVR settings
@@ -677,6 +678,9 @@ settings-osc-vmc-anchor_hip-label = Anchor at hips
 settings-osc-vmc-mirror_tracking = Mirror tracking
 settings-osc-vmc-mirror_tracking-description = Mirror the tracking horizontally.
 settings-osc-vmc-mirror_tracking-label = Mirror tracking
+
+## Profiles
+settings-utils-profiles = Profiles
 
 ## Advanced settings
 settings-utils-advanced = Advanced

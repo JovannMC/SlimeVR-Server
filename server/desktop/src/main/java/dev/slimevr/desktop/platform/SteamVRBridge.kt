@@ -125,7 +125,7 @@ abstract class SteamVRBridge(
 			updateShareSettingsAutomatically()
 			RPCSettingsHandler.sendSteamVRUpdatedSettings(instance.protocolAPI, instance.protocolAPI.rpcHandler)
 		}
-		instance.configManager.saveConfig()
+		instance.configManager.saveConfigs()
 	}
 
 	@VRServerThread
@@ -139,7 +139,7 @@ abstract class SteamVRBridge(
 					removeSharedTracker(tr)
 				}
 				config.setBridgeTrackerRole(role, share)
-				instance.configManager.saveConfig()
+				instance.configManager.saveConfigs()
 			}
 		}
 	}

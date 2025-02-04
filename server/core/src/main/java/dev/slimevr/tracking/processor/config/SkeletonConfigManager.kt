@@ -479,7 +479,7 @@ class SkeletonConfigManager(
 	}
 
 	fun loadFromConfig(configManager: ConfigManager) {
-		val skeletonConfig = configManager.vrConfig.skeleton
+		val skeletonConfig = configManager.userConfig.skeleton
 
 		// Load offsets
 		val offsets = skeletonConfig.getOffsets()

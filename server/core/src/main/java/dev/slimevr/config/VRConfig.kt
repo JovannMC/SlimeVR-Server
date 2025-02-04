@@ -28,11 +28,7 @@ class VRConfig {
 	@get:JvmName("getVMC")
 	val vmc: VMCConfig = VMCConfig()
 
-	val autoBone: AutoBoneConfig = AutoBoneConfig()
-
 	val keybindings: KeybindingsConfig = KeybindingsConfig()
-
-	val skeleton: SkeletonConfig = SkeletonConfig()
 
 	val legTweaks: LegTweaksConfig = LegTweaksConfig()
 
@@ -134,4 +130,9 @@ class VRConfig {
 	fun addKnownDevice(mac: String): Boolean = knownDevices.add(mac)
 
 	fun forgetKnownDevice(mac: String): Boolean = knownDevices.remove(mac)
+}
+
+class UserConfig {
+	val autoBone: AutoBoneConfig = AutoBoneConfig()
+	val skeleton: SkeletonConfig = SkeletonConfig()
 }

@@ -233,7 +233,7 @@ class RPCHandler(private val api: ProtocolAPI) : ProtocolHandler<RpcMessageHeade
 		config.isMirrored = req.isMirrored
 		config.isVisible = req.isVisible
 
-		api.server.configManager.saveConfig()
+		api.server.configManager.saveConfigs()
 	}
 
 	fun onSkeletonResetAllRequest(conn: GenericConnection, messageHeader: RpcMessageHeader) {
@@ -245,7 +245,7 @@ class RPCHandler(private val api: ProtocolAPI) : ProtocolHandler<RpcMessageHeade
 
 		api.server.humanPoseManager.resetOffsets()
 		api.server.humanPoseManager.saveConfig()
-		api.server.configManager.saveConfig()
+		api.server.configManager.saveConfigs()
 
 		// might not be a good idea maybe let the client ask again
 		val fbb = FlatBufferBuilder(300)
@@ -280,7 +280,7 @@ class RPCHandler(private val api: ProtocolAPI) : ProtocolHandler<RpcMessageHeade
 
 		api.server.humanPoseManager.setOffset(joint, req.value())
 		api.server.humanPoseManager.saveConfig()
-		api.server.configManager.saveConfig()
+		api.server.configManager.saveConfigs()
 	}
 
 	fun onRecordBVHRequest(conn: GenericConnection, messageHeader: RpcMessageHeader) {

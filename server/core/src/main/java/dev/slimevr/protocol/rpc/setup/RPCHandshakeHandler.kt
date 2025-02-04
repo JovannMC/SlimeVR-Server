@@ -63,7 +63,7 @@ class RPCHandshakeHandler(
 		this.api.server.configManager.vrConfig.addKnownDevice(
 			req.macAddress() ?: return,
 		)
-		this.api.server.configManager.saveConfig()
+		this.api.server.configManager.saveConfigs()
 	}
 
 	fun onForgetDevice(
@@ -81,6 +81,6 @@ class RPCHandshakeHandler(
 		if (device != null && device is UDPDevice) {
 			this.api.server.trackersServer.disconnectDevice(device)
 		}
-		this.api.server.configManager.saveConfig()
+		this.api.server.configManager.saveConfigs()
 	}
 }

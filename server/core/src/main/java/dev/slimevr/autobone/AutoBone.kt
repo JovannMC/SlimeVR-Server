@@ -62,8 +62,8 @@ class AutoBone(private val server: VRServer) {
 
 	private val rand = Random()
 
-	val globalConfig: AutoBoneConfig = server.configManager.vrConfig.autoBone
-	val globalSkeletonConfig: SkeletonConfig = server.configManager.vrConfig.skeleton
+	val globalConfig: AutoBoneConfig = server.configManager.userConfig.autobone
+	val globalSkeletonConfig: SkeletonConfig = server.configManager.userConfig.skeleton
 
 	init {
 		loadConfigValues()
@@ -176,7 +176,7 @@ class AutoBone(private val server: VRServer) {
 		if (humanPoseManager == null) return false
 		applyConfig(humanPoseManager)
 		humanPoseManager.saveConfig()
-		server.configManager.saveConfig()
+		server.configManager.saveConfigs()
 		LogManager.info("[AutoBone] Configured skeleton bone lengths")
 		return true
 	}

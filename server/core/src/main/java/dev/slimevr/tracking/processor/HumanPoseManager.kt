@@ -26,7 +26,6 @@ import solarxr_protocol.datatypes.DeviceIdT
 import solarxr_protocol.datatypes.TrackerIdT
 import solarxr_protocol.rpc.StatusData
 import solarxr_protocol.rpc.StatusDataUnion
-import solarxr_protocol.rpc.StatusUnassignedHMD
 import solarxr_protocol.rpc.StatusUnassignedHMDT
 import java.util.function.Consumer
 import kotlin.math.*
@@ -647,7 +646,7 @@ class HumanPoseManager(val server: VRServer?) {
 				.vrConfig
 				.skeleton
 				.getToggles()[SkeletonConfigToggles.FLOOR_CLIP.configKey] = value
-			server.configManager.saveConfig()
+			server.configManager.saveConfigs()
 		}
 	}
 
@@ -659,7 +658,7 @@ class HumanPoseManager(val server: VRServer?) {
 				.vrConfig
 				.skeleton
 				.getToggles()[SkeletonConfigToggles.SKATING_CORRECTION.configKey] = value
-			server.configManager.saveConfig()
+			server.configManager.saveConfigs()
 		}
 	}
 

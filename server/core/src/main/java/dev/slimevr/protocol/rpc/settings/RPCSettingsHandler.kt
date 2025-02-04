@@ -322,8 +322,8 @@ class RPCSettingsHandler(var rpcHandler: RPCHandler, var api: ProtocolAPI) {
 			}
 
 			modelSettings.skeletonHeight()?.let {
-				api.server.configManager.vrConfig.skeleton.hmdHeight = it.hmdHeight()
-				api.server.configManager.vrConfig.skeleton.floorHeight = it.floorHeight()
+				api.server.configManager.userConfig.skeleton.hmdHeight = it.hmdHeight()
+				api.server.configManager.userConfig.skeleton.floorHeight = it.floorHeight()
 			}
 
 			hpm.saveConfig()
@@ -354,7 +354,7 @@ class RPCSettingsHandler(var rpcHandler: RPCHandler, var api: ProtocolAPI) {
 			resetsConfig.updateTrackersResetsSettings()
 		}
 
-		api.server.configManager.saveConfig()
+		api.server.configManager.saveConfigs()
 	}
 
 	fun onSettingsResetRequest(conn: GenericConnection, messageHeader: RpcMessageHeader?) {

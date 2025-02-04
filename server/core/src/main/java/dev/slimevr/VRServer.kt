@@ -44,6 +44,8 @@ typealias BridgeProvider = (
 ) -> Sequence<Bridge>
 
 const val SLIMEVR_IDENTIFIER = "dev.slimevr.SlimeVR"
+const val USER_CONFIG_FILENAME = "user-config.yml"
+const val ENV_CONFIG_FILENAME = "env-config.yml"
 
 class VRServer @JvmOverloads constructor(
 	bridgeProvider: BridgeProvider = { _, _ -> sequence {} },
@@ -207,7 +209,7 @@ class VRServer @JvmOverloads constructor(
 			updateSkeletonModel()
 			refreshTrackersDriftCompensationEnabled()
 			configManager.vrConfig.writeTrackerConfig(tracker)
-			configManager.saveConfig()
+			configManager.saveConfigs()
 		}
 	}
 

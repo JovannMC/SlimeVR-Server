@@ -50,7 +50,7 @@ fun main(activity: AppCompatActivity) {
 
 		try {
 			vrServer = VRServer(
-				configPath = File(activity.filesDir, "vrconfig.yml").absolutePath,
+				configPath = File(activity.filesDir).absolutePath,
 				serialHandlerProvider = { _ -> AndroidSerialHandler(activity) },
 				acquireMulticastLock = {
 					val wifi = activity.getSystemService(Context.WIFI_SERVICE) as WifiManager

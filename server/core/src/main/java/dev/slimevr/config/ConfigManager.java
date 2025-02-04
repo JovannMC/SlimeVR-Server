@@ -19,6 +19,9 @@ import java.nio.file.*;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
+import static dev.slimevr.VRServerKt.ENV_CONFIG_FILENAME;
+import static dev.slimevr.VRServerKt.USER_CONFIG_FILENAME;
+
 
 public class ConfigManager {
 
@@ -26,11 +29,16 @@ public class ConfigManager {
 
 	private final ObjectMapper om;
 
-	private VRConfig vrConfig;
+	private Path vrConfigPath;
+	private Path userConfigPath;
 
+	private VRConfig vrConfig;
+	private UserConfig userConfig;
 
 	public ConfigManager(String configPath) {
 		this.configPath = configPath;
+		this.vrConfigPath = Paths.get(configPath).resolve(ENV_CONFIG_FILENAME);
+		this.userConfigPath = Paths.get(configPath).resolve(USER_CONFIG_FILENAME);
 		om = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		om.registerModule(new VersioningModule());
@@ -43,18 +51,24 @@ public class ConfigManager {
 	public void loadConfig() {
 		try {
 			this.vrConfig = om
-				.readValue(new FileInputStream(configPath), VRConfig.class);
+				.readValue(new FileInputStream(vrConfigPath.toString()), VRConfig.class);
+			this.userConfig = om
+				.readValue(new FileInputStream(userConfigPath.toString()), UserConfig.class);
 		} catch (FileNotFoundException e) {
 			// Config file didn't exist, is not an error
 		} catch (IOException e) {
 			// Log the exception
-			LogManager.severe("Config failed to load: " + e);
-			// Make a backup of the erroneous config
-			backupConfig();
+			LogManager.severe("Configs failed to load: " + e);
+			// Make a backup of the erroneous configs
+			backupConfigs();
 		}
 
 		if (this.vrConfig == null) {
 			this.vrConfig = new VRConfig();
+		}
+
+		if (this.userConfig == null) {
+			this.userConfig = new UserConfig();
 		}
 	}
 
@@ -68,52 +82,59 @@ public class ConfigManager {
 		}
 	}
 
-	public void backupConfig() {
-		Path cfgFile = Paths.get(configPath);
-		Path tmpBakCfgFile = Paths.get(configPath + ".bak.tmp");
-		Path bakCfgFile = Paths.get(configPath + ".bak");
+	public void backupConfigs() {
+		backupConfig(vrConfigPath);
+		backupConfig(userConfigPath);
+	}
+
+	private void backupConfig(Path configPath) {
+		Path tmpBakCfgFile = Paths.get(configPath.toString() + ".bak.tmp");
+		Path bakCfgFile = Paths.get(configPath.toString() + ".bak");
 
 		try {
-			Files
-				.copy(
-					cfgFile,
-					tmpBakCfgFile,
-					StandardCopyOption.REPLACE_EXISTING,
-					StandardCopyOption.COPY_ATTRIBUTES
-				);
+			Files.copy(
+				configPath,
+				tmpBakCfgFile,
+				StandardCopyOption.REPLACE_EXISTING,
+				StandardCopyOption.COPY_ATTRIBUTES
+			);
 			LogManager.info("Made a backup copy of config to \"" + tmpBakCfgFile + "\"");
 		} catch (IOException e) {
-			LogManager
-				.severe(
-					"Unable to make backup copy of config from \""
-						+ cfgFile
-						+ "\" to \""
-						+ tmpBakCfgFile
-						+ "\"",
-					e
-				);
+			LogManager.severe(
+				"Unable to make backup copy of config from \""
+					+ configPath
+					+ "\" to \""
+					+ tmpBakCfgFile
+					+ "\"",
+				e
+			);
 			return; // Abort write
 		}
 
 		try {
 			atomicMove(tmpBakCfgFile, bakCfgFile);
 		} catch (IOException e) {
-			LogManager
-				.severe(
-					"Unable to move backup config from \""
-						+ tmpBakCfgFile
-						+ "\" to \""
-						+ bakCfgFile
-						+ "\"",
-					e
-				);
+			LogManager.severe(
+				"Unable to move backup config from \""
+					+ tmpBakCfgFile
+					+ "\" to \""
+					+ bakCfgFile
+					+ "\"",
+				e
+			);
 		}
 	}
 
 	@ThreadSafe
-	public synchronized void saveConfig() {
-		Path tmpCfgFile = Paths.get(configPath + ".tmp");
-		Path cfgFile = Paths.get(configPath);
+	public synchronized void saveConfigs() {
+		saveConfig(vrConfigPath, vrConfig);
+		saveConfig(userConfigPath, userConfig);
+	}
+
+	@ThreadSafe
+	private void saveConfig(Path configPath, Object config) {
+		Path tmpCfgFile = Paths.get(configPath.toString() + ".tmp");
+		Path cfgFile = Paths.get(configPath.toString());
 
 		// Serialize config
 		try {
@@ -135,7 +156,6 @@ public class ConfigManager {
 						);
 					return;
 				}
-
 			}
 			var cfgFolder = cfgFile.toAbsolutePath().getParent().toFile();
 			if (!cfgFolder.exists() && !cfgFolder.mkdirs()) {
@@ -143,7 +163,7 @@ public class ConfigManager {
 					.severe("Unable to create folders for config on path \"" + cfgFile + "\"");
 				return;
 			}
-			om.writeValue(tmpCfgFile.toFile(), this.vrConfig);
+			om.writeValue(tmpCfgFile.toFile(), config);
 		} catch (IOException e) {
 			LogManager.severe("Unable to write serialized config to \"" + tmpCfgFile + "\"", e);
 			return; // Abort write
@@ -163,7 +183,8 @@ public class ConfigManager {
 
 	public void resetConfig() {
 		this.vrConfig = new VRConfig();
-		saveConfig();
+		this.userConfig = new UserConfig();
+		saveConfigs();
 	}
 
 	public VRConfig getVrConfig() {

@@ -2,9 +2,7 @@
 
 package dev.slimevr.desktop
 
-import dev.slimevr.Keybinding
-import dev.slimevr.SLIMEVR_IDENTIFIER
-import dev.slimevr.VRServer
+import dev.slimevr.*
 import dev.slimevr.bridge.Bridge
 import dev.slimevr.desktop.firmware.DesktopSerialFlashingHandler
 import dev.slimevr.desktop.platform.SteamVRBridge
@@ -74,8 +72,9 @@ fun main(args: Array<String>) {
 		exitProcess(1)
 	}
 
-	val dir = OperatingSystem.resolveLogDirectory(SLIMEVR_IDENTIFIER)?.toFile()?.absoluteFile
-		?: File("").absoluteFile
+	val dir =
+		OperatingSystem.resolveLogDirectory(SLIMEVR_IDENTIFIER)?.toFile()?.absoluteFile
+			?: File("").absoluteFile
 	try {
 		LogManager.initialize(dir)
 	} catch (e1: java.lang.Exception) {
@@ -236,17 +235,32 @@ fun provideBridges(
 	}
 }
 
-const val CONFIG_FILENAME = "vrconfig.yml"
+// Returns empty string for relative path
 fun resolveConfig(): String {
 	// If config folder exists, then save config on relative path
 	if (Path("config/").exists()) {
-		return CONFIG_FILENAME
+		return ""
 	}
 
-	val configFile = OperatingSystem.resolveConfigDirectory(SLIMEVR_IDENTIFIER)?.resolve(CONFIG_FILENAME) ?: return CONFIG_FILENAME
-	if (!configFile.exists() && Path(CONFIG_FILENAME).exists()) {
-		LogManager.info("Moved local config file to appdata folder")
-		Files.move(Path(CONFIG_FILENAME), configFile)
+	val configDir =
+		OperatingSystem.resolveConfigDirectory(SLIMEVR_IDENTIFIER) ?: return ""
+
+	if (!configDir.exists()) {
+		Files.createDirectories(configDir)
+		if (Path(ENV_CONFIG_FILENAME).exists()) {
+			LogManager.info("Moved local environment config file to appdata folder")
+			Files.move(
+				Path(ENV_CONFIG_FILENAME),
+				configDir.resolve(ENV_CONFIG_FILENAME)
+			)
+		}
+		if (Path(USER_CONFIG_FILENAME).exists()) {
+			LogManager.info("Moved local user config file to appdata folder")
+			Files.move(
+				Path(USER_CONFIG_FILENAME),
+				configDir.resolve(USER_CONFIG_FILENAME)
+			)
+		}
 	}
-	return configFile.pathString
+	return configDir.pathString
 }

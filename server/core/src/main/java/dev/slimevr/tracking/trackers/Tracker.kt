@@ -248,7 +248,7 @@ class Tracker @JvmOverloads constructor(
 			// If value didn't exist, default to true and save
 			resetsHandler.allowDriftCompensation = true
 			VRServer.instance.configManager.vrConfig.getTracker(this).allowDriftCompensation = true
-			VRServer.instance.configManager.saveConfig()
+			VRServer.instance.configManager.saveConfigs()
 		} else {
 			config.allowDriftCompensation?.let {
 				resetsHandler.allowDriftCompensation = it
@@ -292,7 +292,7 @@ class Tracker @JvmOverloads constructor(
 	fun saveMountingResetOrientation(quat: Quaternion?) {
 		val configManager = VRServer.instance.configManager
 		configManager.vrConfig.getTracker(this).mountingResetOrientation = quat?.toObject()
-		configManager.saveConfig()
+		configManager.saveConfigs()
 	}
 
 	/**

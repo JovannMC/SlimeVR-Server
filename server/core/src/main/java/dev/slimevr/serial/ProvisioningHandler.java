@@ -148,7 +148,7 @@ public class ProvisioningHandler implements SerialListener {
 				var b = match.getGroups().get(1);
 				if (b != null) {
 					vrServer.configManager.getVrConfig().addKnownDevice(b.getValue());
-					vrServer.configManager.saveConfig();
+					vrServer.configManager.saveConfigs();
 					this.tryProvisioning();
 				}
 			}

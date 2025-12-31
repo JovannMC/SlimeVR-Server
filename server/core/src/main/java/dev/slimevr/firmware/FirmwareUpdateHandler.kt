@@ -1,7 +1,5 @@
 package dev.slimevr.firmware
 
-import com.mayakapps.kache.InMemoryKache
-import com.mayakapps.kache.KacheStrategy
 import dev.llelievr.espflashkotlin.Flasher
 import dev.llelievr.espflashkotlin.FlashingProgressListener
 import dev.slimevr.VRServer
@@ -17,7 +15,6 @@ import kotlinx.coroutines.*
 import solarxr_protocol.rpc.FirmwarePartT
 import solarxr_protocol.rpc.FirmwareUpdateRequestT
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.io.InputStream
 import java.net.URL
 import java.security.MessageDigest
